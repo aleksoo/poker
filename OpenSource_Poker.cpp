@@ -808,7 +808,7 @@ private:
 
 			printWinningHand(roundWinner);
 
-			players[roundWinner].money += pot
+			players[roundWinner].money += pot;
 
 			i++;
 		}
