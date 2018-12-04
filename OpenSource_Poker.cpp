@@ -262,21 +262,21 @@ private:
 		if (players[playerNum].cards[0].rank < 8 && players[playerNum].cards[1].rank < 8)
 		{
 			if (players[playerNum].cards[0].rank != players[playerNum].cards[1].rank)
-				return 1;
+				return playerAction::FLOP;
 			else
-				return 2;
+				return playerAction::CHECK;
 		}
 
 		else if (players[playerNum].cards[0].rank < 10 && players[playerNum].cards[1].rank < 10)
 		{
 			if (players[playerNum].cards[0].rank != players[playerNum].cards[1].rank)
-				return 2;
+				return playerAction::CHECK;
 			else
-				return 3;
+				return playerAction::BETCALL;
 		}
 		else
 		{
-			return 3;
+			return playerAction::BETCALL;
 		}
 	}
 
@@ -376,14 +376,14 @@ private:
 				{
 					continue;
 				}
-				rational = rand() % 2 + 1; // zmiana
+				rational = rand() % 2 + 1; 
 				if (rational)
 				{
 					action = computerAction(k % players_count);
 				}
 				else
 				{
-					action = rand() % 3 + 1; // zmiana
+					action = rand() % 3 + 1; 
 				}
 				if (action == playerAction::FLOP)
 				{
@@ -456,7 +456,7 @@ private:
 				{
 					if (players[k % players_count].round == 0 || players[k % players_count].goodToGo == 1)
 						continue;
-					action = rand() % 2 + 1; // zmiana
+					action = rand() % 2 + 1; 
 					if (action == playerAction::FLOP)
 					{
 						players[k % players_count].round = 0;
