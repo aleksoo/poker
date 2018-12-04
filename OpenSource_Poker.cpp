@@ -246,6 +246,7 @@ private:
 	int pot, action, bet, rational, betOn, winner, maxPoints, roundWinner;
 	int handPoints[6];
 	int bestHand[6][3];
+    enum playerAction{FLOP = 1, CHECK, BETCALL};
 
 	int playersLeft()
 	{
@@ -261,21 +262,21 @@ private:
 		if (players[playerNum].cards[0].rank < 8 && players[playerNum].cards[1].rank < 8)
 		{
 			if (players[playerNum].cards[0].rank != players[playerNum].cards[1].rank)
-				return 0;
-			else
 				return 1;
+			else
+				return 2;
 		}
 
 		else if (players[playerNum].cards[0].rank < 10 && players[playerNum].cards[1].rank < 10)
 		{
 			if (players[playerNum].cards[0].rank != players[playerNum].cards[1].rank)
-				return 1;
-			else
 				return 2;
+			else
+				return 3;
 		}
 		else
 		{
-			return 2;
+			return 3;
 		}
 	}
 
@@ -308,7 +309,7 @@ private:
 				{
 					cout << "\t\t\t\t\tYour action: (1) FLOP (3) BET/CALL ";
 					cin >> action;
-					while (action != 1 && action != 3)
+					while (action != playerAction::FLOP && action != playerAction::BETCALL)
 					{
 						cout << "Invalid number pressed." << endl;
 						cout << "\t\t\t\t\tYour action: (1) FLOP (3) BET/CALL ";
@@ -319,7 +320,7 @@ private:
 				{
 					cout << "\t\t\t\t\tYour action: (1) FLOP (2) CHECK (3) BET/CALL ";
 					cin >> action;
-					while (action < 1 || action > 3)
+					while (action < playerAction::FLOP  || action > playerAction::BETCALL)
 					{
 						cout << "Invalid number pressed." << endl;
 						cout << "\t\t\t\t\tYour action: (1) FLOP (2) CHECK (3) BET/CALL ";
@@ -329,12 +330,12 @@ private:
 
 				cout << endl;
 
-				if (action == 1)
+				if (action == playerAction::FLOP)
 				{
 					players[4].round = 0;
 					cout << "\t- " << players[4].name << " flops...\n";
 				}
-				else if (action == 2)
+				else if (action == playerAction::CHECK)
 				{
 					cout << "\t+ " << players[4].name << " checks.\n";
 					continue;
@@ -375,21 +376,21 @@ private:
 				{
 					continue;
 				}
-				rational = rand() % 2;
+				rational = rand() % 2 + 1; // zmiana
 				if (rational)
 				{
 					action = computerAction(k % players_count);
 				}
 				else
 				{
-					action = rand() % 3;
+					action = rand() % 3 + 1; // zmiana
 				}
-				if (action == 0)
+				if (action == playerAction::FLOP)
 				{
 					players[k % players_count].round = 0;
 					cout << "\t- " << players[k % players_count].name << " flops..." << endl;
 				}
-				else if (action == 1 && betOn == 0)
+				else if (action == playerAction::CHECK && betOn == 0)
 				{
 					cout << "\t+ " << players[k % players_count].name << " checks." << endl;
 					continue;
@@ -428,14 +429,14 @@ private:
 					{
 						cout << "\t\t\t\t\tYour action: (1) FLOP (3) BET/CALL ";
 						cin >> action;
-						while (action != 1 && action != 3)
+						while (action != playerAction::FLOP && action != playerAction::BETCALL)
 						{
 							cout << "Invalid number pressed." << endl;
 							cout << "\t\t\t\t\tYour action: (1) FLOP (3) BET/CALL ";
 							cin >> action;
 							cout << endl << endl;
 						}
-						if (action == 1)
+						if (action == playerAction::CHECK)
 						{
 							cout << "\t- " << players[4].name << " flops...\n";
 							players[4].round = 0;
@@ -455,8 +456,8 @@ private:
 				{
 					if (players[k % players_count].round == 0 || players[k % players_count].goodToGo == 1)
 						continue;
-					action = rand() % 2;
-					if (action == 0)
+					action = rand() % 2 + 1; // zmiana
+					if (action == playerAction::FLOP)
 					{
 						players[k % players_count].round = 0;
 						cout << "\t- " << players[k % players_count].name << " flops..." << endl;
