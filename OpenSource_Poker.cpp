@@ -31,7 +31,7 @@ void press_Enter()
 void sleep(int time)
 {
 #ifdef __linux__ 
-	sleep(time);
+	usleep(time * 1000);
 #elif _WIN32
 	Sleep(time);
 #endif
@@ -808,7 +808,7 @@ private:
 
 			printWinningHand(roundWinner);
 
-			players[roundWinner].money += pot
+			players[roundWinner].money += pot;
 
 			i++;
 		}
