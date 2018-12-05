@@ -697,7 +697,7 @@ private:
 		cout << "   The other hands hand:" << endl;
 		for (int playerIndex = 0; playerIndex < players_count; ++playerIndex)
 		{
-			if(playerIndex == winner || players[playerIndex].round)
+			if(playerIndex == winner || !(players[playerIndex].round))
 			{
 				continue;
 			}
