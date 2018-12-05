@@ -685,6 +685,30 @@ private:
 		cout << "  | " << suits[winningHand[0].suit] << " | | " << suits[winningHand[1].suit] << " | | " << suits[winningHand[2].suit] << " | | " << suits[winningHand[3].suit] << " | | " << suits[winningHand[4].suit] << " |" << endl;
 		cout << "  |___| |___| |___| |___| |___|" << endl;
 		cout << endl << endl;
+	}
+
+	void printPlayerHands(int winner)
+	{
+		using std::cout;
+		using std::endl;
+		Card winningHand[5];
+
+		cout << "   The other hands hand:" << endl;
+		for (int playerIndex = 0; playerIndex < players_count; ++playerIndex)
+		{
+			if(playerIndex == winner || players[playerIndex].round)
+			{
+				continue;
+			}
+
+			cout << "  Cards of " << players[playerIndex].name << endl; 
+			cout << "   ___   ___ " << endl;
+			cout << "  | " << ranks[players[playerIndex].cards[0].rank] << " | | " << ranks[players[playerIndex].cards[1].rank] << " |" << endl;
+			cout << "  | " << suits[players[playerIndex].cards[0].suit] << " | | " << suits[players[playerIndex].cards[1].suit] << " |" << endl;
+			cout << "  |___| |___|" << endl;
+			cout << endl << endl;
+		}
+
 		sleep(3);
 	}
 
@@ -824,6 +848,7 @@ private:
 			std::cout << "\n\n";
 
 			printWinningHand(roundWinner);
+			printPlayerHands(roundWinner);
 
 			players[roundWinner].money += pot;
 
