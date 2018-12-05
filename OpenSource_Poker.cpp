@@ -239,6 +239,7 @@ public:
 
 private:
 	static const int players_count = 6;
+	const int player_index = 4;
 	Player players[players_count];
 	Deck deck1;
 	int bind;
@@ -303,7 +304,7 @@ private:
 		for (int k = bind + 1; k < bind + 7; k++)
 		{
 			/* human player actions */
-			if (k % players_count == 4 && players[4].round)
+			if (k % players_count == player_index && players[player_index].round)
 			{
 				if (betOn)
 				{
@@ -332,40 +333,40 @@ private:
 
 				if (action == playerAction::FLOP)
 				{
-					players[4].round = 0;
-					cout << "\t- " << players[4].name << " flops...\n";
+					players[player_index].round = 0;
+					cout << "\t- " << players[player_index].name << " flops...\n";
 				}
 				else if (action == playerAction::CHECK)
 				{
-					cout << "\t+ " << players[4].name << " checks.\n";
+					cout << "\t+ " << players[player_index].name << " checks.\n";
 					continue;
 				}
 				else
 				{										
 					if (betOn)
 					{
-						if (players[4].money - betOn >= 0)
+						if (players[player_index].money - betOn >= 0)
 						{
 							pot += betOn;
-							players[4].money -= betOn;
-							players[4].goodToGo = 1;
-							cout << "\t+ " << players[4].name << " bets " << betOn << "$\n";
+							players[player_index].money -= betOn;
+							players[player_index].goodToGo = 1;
+							cout << "\t+ " << players[player_index].name << " bets " << betOn << "$\n";
 						}
 						else
 						{
-							pot += players[4].money;
-							players[4].money = 0;
-							players[4].goodToGo = 1;
-							cout << "\t+ " << players[4].name << " bets all-in (" << betOn << "$)\n";
+							pot += players[player_index].money;
+							players[player_index].money = 0;
+							players[player_index].goodToGo = 1;
+							cout << "\t+ " << players[player_index].name << " bets all-in (" << betOn << "$)\n";
 						}
 					}
 					else 
 					{
-						if (players[4].money > 0)
+						if (players[player_index].money > 0)
 						{
 							cout << "How much do you want to bet: ";
 							cin >> bet;						
-							while (bet > players[4].money || bet < 1)
+							while (bet > players[player_index].money || bet < 1)
 							{
 								cout << "Invalid number to bet." << endl;
 								cout << "How much do you want to bet: ";
@@ -373,12 +374,12 @@ private:
 								cout << endl << endl;
 							}
 							pot += bet;
-							players[4].money -= bet;
+							players[player_index].money -= bet;
 							betOn = bet;
-							players[4].goodToGo = 1;
-							cout << "\t+ " << players[4].name << " bets " << bet << "$\n";
+							players[player_index].goodToGo = 1;
+							cout << "\t+ " << players[player_index].name << " bets " << bet << "$\n";
 						}
-						else if (players[4].money <= 0)
+						else if (players[player_index].money <= 0)
 						{
 							cout << "Sorry, you don't have money" << endl;
 						}
@@ -439,9 +440,9 @@ private:
 		{
 			for (int k = bind + 1; k < bind + 7; k++)
 			{
-				if (k % players_count == 4)
+				if (k % players_count == player_index)
 				{
-					if (players[4].round && players[4].goodToGo == 0)
+					if (players[player_index].round && players[player_index].goodToGo == 0)
 					{
 						cout << "\t\t\t\t\tYour action: (1) FLOP (3) BET/CALL ";
 						cin >> action;
@@ -454,16 +455,16 @@ private:
 						}
 						if (action == playerAction::CHECK)
 						{
-							cout << "\t- " << players[4].name << " flops...\n";
-							players[4].round = 0;
+							cout << "\t- " << players[player_index].name << " flops...\n";
+							players[player_index].round = 0;
 						}
 						else
 						{
 							pot += betOn;
-							players[4].money -= betOn;
-							players[4].goodToGo = 1;
+							players[player_index].money -= betOn;
+							players[player_index].goodToGo = 1;
 
-							cout << "\t+ " << players[4].name << " bets " << betOn << "$\n";
+							cout << "\t+ " << players[player_index].name << " bets " << betOn << "$\n";
 						}
 					}
 				}
@@ -741,7 +742,7 @@ private:
 			}
 
 			/* checking for game over*/
-			if (players[4].playing == 0)
+			if (players[player_index].playing == 0)
 			{
 				std::cout << "You are out of money, sorry." << std::endl;
 				std::cout << "Game over." << std::endl;
