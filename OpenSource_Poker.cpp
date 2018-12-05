@@ -341,31 +341,47 @@ private:
 					continue;
 				}
 				else
-				{
+				{										
 					if (betOn)
 					{
-						pot += betOn;
-						players[4].money -= betOn;
-						players[4].goodToGo = 1;
-						cout << "\t+ " << players[4].name << " bets " << betOn << "$\n";
-					}
-					else
-					{
-						cout << "How much do you want to bet: ";
-						cin >> bet;
-						while (bet > players[4].money || bet < 1)
+						if (players[4].money - betOn >= 0)
 						{
-							cout << "Invalid number to bet." << endl;
-							cout << "How much do you want to bet: ";
-							cin >> bet;
-							cout << endl << endl;
+							pot += betOn;
+							players[4].money -= betOn;
+							players[4].goodToGo = 1;
+							cout << "\t+ " << players[4].name << " bets " << betOn << "$\n";
 						}
-						pot += bet;
-						players[4].money -= bet;
-						betOn = bet;
-						players[4].goodToGo = 1;
-
-						cout << "\t+ " << players[4].name << " bets " << bet << "$\n";
+						else
+						{
+							pot += players[4].money;
+							players[4].money = 0;
+							players[4].goodToGo = 1;
+							cout << "\t+ " << players[4].name << " bets all-in (" << betOn << "$)\n";
+						}
+					}
+					else 
+					{
+						if (players[4].money > 0)
+						{
+							cout << "How much do you want to bet: ";
+							cin >> bet;						
+							while (bet > players[4].money || bet < 1)
+							{
+								cout << "Invalid number to bet." << endl;
+								cout << "How much do you want to bet: ";
+								cin >> bet;
+								cout << endl << endl;
+							}
+							pot += bet;
+							players[4].money -= bet;
+							betOn = bet;
+							players[4].goodToGo = 1;
+							cout << "\t+ " << players[4].name << " bets " << bet << "$\n";
+						}
+						else if (players[4].money <= 0)
+						{
+							cout << "Sorry, you don't have money" << endl;
+						}
 					}
 				}
 			}
