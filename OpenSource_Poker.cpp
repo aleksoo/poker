@@ -345,14 +345,14 @@ private:
 				{										
 					if (betOn)
 					{
-						if (players[player_index].money - betOn >= 0)
+						if (players[player_index].money - betOn > 0)
 						{
 							pot += betOn;
 							players[player_index].money -= betOn;
 							players[player_index].goodToGo = 1;
 							cout << "\t+ " << players[player_index].name << " bets " << betOn << "$\n";
 						}
-						else
+						else if (players[player_index].money - betOn == 0)
 						{
 							pot += players[player_index].money;
 							players[player_index].money = 0;
@@ -416,10 +416,25 @@ private:
 				{
 					if (betOn)
 					{
-						pot += betOn;
-						players[k % players_count].money -= betOn;
-						cout << "\t++ " << players[k % players_count].name << " calls!" << endl;
-						players[k % players_count].goodToGo = 1;
+						if (players[k % players_count].money - betOn > 0)
+						{
+							pot += betOn;
+							players[k % players_count].money -= betOn;
+							players[k % players_count].goodToGo = 1;
+							cout << "\t+ " << players[k % players_count].name << " bets " << betOn << "$\n";
+						}
+						else if (players[k % players_count].money - betOn == 0)
+						{
+							pot += players[k % players_count].money;
+							players[k % players_count].money = 0;
+							players[k % players_count].goodToGo = 1;
+							cout << "\t+ " << players[k % players_count].name << " bets all-in (" << betOn << "$)\n";
+						}
+
+						// pot += betOn;
+						// players[k % players_count].money -= betOn;
+						// cout << "\t++ " << players[k % players_count].name << " calls!" << endl;
+						// players[k % players_count].goodToGo = 1;
 					}
 					else
 					{
