@@ -340,53 +340,48 @@ private:
 					cout << "\t+ " << players[4].name << " checks.\n";
 					continue;
 				}
-				else // tutaj sprawdzic czy gracz ma 0 kasy?
-				{
-					if (betOn) // tutaj chyba obsluzyc jezeli gracz ma 0 kasy
+				else
+				{										
+					if (betOn)
 					{
-                        //if sprawdzic czy balans bedzie rowny 0, odpowiednio odjac kaske, pozniej musi betOn zmienic chyba na 0 czy cos, zeby nie mogl gracz nic robic
-						//chyba dziala
-                        if(players[4].money - betOn > 0 )
-                        {
-                            pot += betOn;
-                            players[4].money -= betOn;
-                            players[4].goodToGo = 1;
-                            cout << "\t+ " << players[4].name << " bets " << betOn << "$\n";
-                        } 
-                        else 
-                        {   // tu jak rzuci takiego beta zeby mial 0
-                            cout << "\t+ " << players[4].name << " bets all-in (" << players[4].money << ")$\n";
-                            pot += players[4].money;
-                            players[4].money = 0;
-                            players[4].goodToGo = 1;      
-                            players[4].round = 0;                      
-                        }
-                        
+						if (players[4].money - betOn >= 0)
+						{
+							pot += betOn;
+							players[4].money -= betOn;
+							players[4].goodToGo = 1;
+							cout << "\t+ " << players[4].name << " bets " << betOn << "$\n";
+						}
+						else
+						{
+							pot += players[4].money;
+							players[4].money = 0;
+							players[4].goodToGo = 1;
+							cout << "\t+ " << players[4].name << " bets all-in (" << betOn << "$)\n";
+						}
 					}
-					else
+					else 
 					{
-                        if(players[4].money > 0)
-                        {
-                            cout << "How much do you want to bet: ";
-                            cin >> bet;
-                            while ((bet > players[4].money || bet < 1) && (players[4].money - bet <= 0))
-                            {
-                                cout << "Invalid number to bet." << endl;
-                                cout << "How much do you want to bet: ";
-                                cin >> bet;
-                                cout << endl << endl;
-                            }
-                            pot += bet;
-                            players[4].money -= bet;
-                            betOn = bet;
-                            players[4].goodToGo = 1;
-
-                            cout << "\t+ " << players[4].name << " bets " << bet << "$\n";
-                        }
-                        else
-                        {
-                            cout << "";
-                        }
+						if (players[4].money > 0)
+						{
+							cout << "How much do you want to bet: ";
+							cin >> bet;						
+							while (bet > players[4].money || bet < 1)
+							{
+								cout << "Invalid number to bet." << endl;
+								cout << "How much do you want to bet: ";
+								cin >> bet;
+								cout << endl << endl;
+							}
+							pot += bet;
+							players[4].money -= bet;
+							betOn = bet;
+							players[4].goodToGo = 1;
+							cout << "\t+ " << players[4].name << " bets " << bet << "$\n";
+						}
+						else if (players[4].money <= 0)
+						{
+							cout << "Sorry, you don't have money" << endl;
+						}
 					}
 				}
 			}
@@ -420,27 +415,10 @@ private:
 				{
 					if (betOn)
 					{
-                        // to tu to samo co w humanie zrobilem
-                        if(players[k % players_count].money - betOn > 0)
-                        {
-                            pot += betOn;
-                            players[k % players_count].money -= betOn;
-                            players[k % players_count].goodToGo = 1;
-                            cout << "\t+ " << players[k % players_count].name << " bets " << betOn << "$\n";
-                        } 
-                        else 
-                        {   // tu jak rzuci takiego beta zeby mial 0
-                            cout << "\t+ " << players[k % players_count].name << " bets all-in (" << players[k % players_count].money << ")$\n";
-                            pot += players[k % players_count].money;
-                            players[k % players_count].money = 0;
-                            players[k % players_count].goodToGo = 1;      
-                            players[k % players_count].round = 0; // kontrowersyjne pole!                   
-                        }
-
-						// pot += betOn;
-						// players[k % players_count].money -= betOn;
-						// cout << "\t++ " << players[k % players_count].name << " calls!" << endl;
-						// players[k % players_count].goodToGo = 1;
+						pot += betOn;
+						players[k % players_count].money -= betOn;
+						cout << "\t++ " << players[k % players_count].name << " calls!" << endl;
+						players[k % players_count].goodToGo = 1;
 					}
 					else
 					{
