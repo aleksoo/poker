@@ -827,6 +827,7 @@ private:
 			}
 			std::cout << std::endl;
 			std::cout << players[roundWinner].name << " wins $" << pot << " with ";
+			players[roundWinner].money += pot;
 			if (maxPoints < 30)
 				std::cout << "HIGH CARD";
 			else if (maxPoints < 50)
@@ -850,7 +851,7 @@ private:
 			printWinningHand(roundWinner);
 			printPlayerHands(roundWinner);
 
-			players[roundWinner].money += pot;
+			
 
 			i++;
 		}
