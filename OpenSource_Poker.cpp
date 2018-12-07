@@ -1,4 +1,4 @@
-
+ 
 /****************************************************************************/
 /*                A simple Texas Hold'em Poker simulartion.                 */
 /*                Program runs fine, but gameplay still has some bugs.      */
