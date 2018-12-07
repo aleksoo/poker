@@ -17,7 +17,7 @@
 
 const int suits_count = 4;
 const int ranks_count = 13;
-const int sleep_time = 2000;
+const int sleep_time = 1;
 
 std::string suits[suits_count];
 std::string ranks[ranks_count];
@@ -306,6 +306,11 @@ private:
 			/* human player actions */
 			if (k % players_count == player_index && players[player_index].round)
 			{
+				if (players[player_index].money == 0)
+				{
+					cout << "\t+ " << players[player_index].name << " is on all-in\n";
+					continue;
+				}
 				if (betOn)
 				{
 					cout << "\t\t\t\t\tYour action: (1) FLOP (3) BET/CALL ";
@@ -344,20 +349,20 @@ private:
 				else
 				{										
 					if (betOn)
-					{
-						if (players[player_index].money - betOn >= 0)
+					{ 
+						if (players[player_index].money - betOn > 0)
 						{
 							pot += betOn;
 							players[player_index].money -= betOn;
 							players[player_index].goodToGo = 1;
 							cout << "\t+ " << players[player_index].name << " bets " << betOn << "$\n";
 						}
-						else
+						else if (players[player_index].money - betOn <= 0)
 						{
+							cout << "\t+ " << players[player_index].name << " bets all-in (" << players[player_index].money << "$)\n";
 							pot += players[player_index].money;
 							players[player_index].money = 0;
 							players[player_index].goodToGo = 1;
-							cout << "\t+ " << players[player_index].name << " bets all-in (" << betOn << "$)\n";
 						}
 					}
 					else 
@@ -393,6 +398,13 @@ private:
 				{
 					continue;
 				}
+
+				if (players[k % players_count].money == 0)
+				{
+					cout << "\t+ " << players[k % players_count].name << " is on all-in\n";
+					continue;
+				}
+
 				rational = rand() % 2 + 1; 
 				if (rational)
 				{
@@ -412,14 +424,24 @@ private:
 					cout << "\t+ " << players[k % players_count].name << " checks." << endl;
 					continue;
 				}
-				else
+				else 
 				{
 					if (betOn)
 					{
-						pot += betOn;
-						players[k % players_count].money -= betOn;
-						cout << "\t++ " << players[k % players_count].name << " calls!" << endl;
-						players[k % players_count].goodToGo = 1;
+						if (players[k % players_count].money - betOn > 0)
+						{
+							pot += betOn;
+							players[k % players_count].money -= betOn;
+							players[k % players_count].goodToGo = 1;
+							cout << "\t+ " << players[k % players_count].name << " bets " << betOn << "$\n";
+						}
+						else if (players[k % players_count].money - betOn <= 0)
+						{
+							cout << "\t+ " << players[k % players_count].name << " bets all-in (" << players[k % players_count].money << "$)\n";
+							pot += players[k % players_count].money;
+							players[k % players_count].money = 0;
+							players[k % players_count].goodToGo = 1;
+						}
 					}
 					else
 					{
@@ -442,6 +464,11 @@ private:
 			{
 				if (k % players_count == player_index)
 				{
+					if (players[player_index].money == 0)
+					{
+						cout << "\t+ " << players[player_index].name << " is on all-in\n";
+						continue;
+					}
 					if (players[player_index].round && players[player_index].goodToGo == 0)
 					{
 						cout << "\t\t\t\t\tYour action: (1) FLOP (3) BET/CALL ";
@@ -459,12 +486,21 @@ private:
 							players[player_index].round = 0;
 						}
 						else
-						{
-							pot += betOn;
-							players[player_index].money -= betOn;
-							players[player_index].goodToGo = 1;
-
-							cout << "\t+ " << players[player_index].name << " bets " << betOn << "$\n";
+						{ 
+							if (players[player_index].money - betOn > 0)
+							{
+								pot += betOn;
+								players[player_index].money -= betOn;
+								players[player_index].goodToGo = 1;
+								cout << "\t+ " << players[player_index].name << " bets " << betOn << "$\n";
+							}
+							else if (players[player_index].money - betOn <= 0)
+							{
+								cout << "\t+ " << players[player_index].name << " bets all-in (" << players[player_index].money << "$)\n";
+								pot += players[player_index].money;
+								players[player_index].money = 0;
+								players[player_index].goodToGo = 1;
+							}
 						}
 					}
 				}
@@ -481,10 +517,20 @@ private:
 					}
 					else
 					{
-						pot += betOn;
-						players[k % players_count].money -= betOn;
-						cout << "\t++ " << players[k % players_count].name << " calls!" << endl;
-						players[k % players_count].goodToGo = 1;
+							if (players[k % players_count].money - betOn > 0)
+							{
+								pot += betOn;
+								players[k % players_count].money -= betOn;
+								players[k % players_count].goodToGo = 1;
+								cout << "\t+ " << players[k % players_count].name << " bets " << betOn << "$\n";
+							}
+							else if (players[k % players_count].money - betOn <= 0)
+							{
+								cout << "\t+ " << players[k % players_count].name << " bets all-in (" << players[k % players_count].money << "$)\n";
+								pot += players[k % players_count].money;
+								players[k % players_count].money = 0;
+								players[k % players_count].goodToGo = 1;
+							}
 					}
 				}
 			}
