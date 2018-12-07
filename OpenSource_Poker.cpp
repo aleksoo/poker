@@ -759,6 +759,67 @@ private:
 		sleep(3);
 	}
 
+	void winnerScreen()
+	{
+		using std::cout;
+		using std::endl;
+
+		cout << "               *    *" << endl;
+		cout << "   *         '       *       .  *   '     .           * *" << endl;
+		cout << "                                                               '" << endl;
+		cout << "       *                *'          *          *        '" << endl;
+		cout << "   .           *               |               /" << endl;
+		cout << "               '.         |    |      '       |   '     *" << endl;
+		cout << "                 \\*        \\   \\             /" << endl;
+		cout << "       '          \\     '* |    |  *        |*                *  *" << endl;
+		cout << "            *      `.       \\   |     *     /    *      '" << endl;
+		cout << "  .                  \\      |   \\          /               *" << endl;
+		cout << "     *'  *     '      \\      \\   '.       |" << endl;
+		cout << "        -._            `                  /         *" << endl;
+		cout << "  ' '      ``._   *                           '          .      '" << endl;
+		cout << "   *           *\\*          * .   .      *" << endl;
+		cout << "*  '        *    `-._                       .         _..:='        *" << endl;
+		cout << "             .  '      *       *    *   .       _.:--'" << endl;
+		cout << "          *           .     .     *         .-'         *" << endl;
+		cout << "   .               '           YOU WON! *           *         ." << endl;
+		cout << "  *       ___.-=--..-._     *                '               '" << endl;
+		cout << "                                  *       *" << endl;
+		cout << "                *        _.'  .'       `.        '  *             *" << endl;
+		cout << "     *              *_.-'   .'            `.               *" << endl;
+		cout << "                   .'                       `._             *  '" << endl;
+		cout << "   '       '                        .       .  `.     ." << endl;
+		cout << "       .                      *                  `" << endl;
+		cout << "               *        '             '                          ." << endl;
+		cout << "     .                          *        .           *  *" << endl;
+		cout << "             *        .                                    '" << endl;
+		cout << endl;
+		cout << endl;
+	}
+
+	void losingScreen()
+	{
+		using std::cout;
+		using std::endl;
+
+		cout << "     	       ______" << endl;
+		cout << "         _____/      \\_____" << endl;
+		cout << "        |  _     ___   _   ||" << endl;
+		cout << "        | | \\     |   | \\  ||" << endl;
+		cout << "        | |  |    |   |  | ||" << endl;
+		cout << "        | |_/     |   |_/  ||" << endl;
+		cout << "        | | \\     |   |    ||" << endl;
+		cout << "        | |  \\    |   |    ||" << endl;
+		cout << "        | |   \\. _|_. | .  ||" << endl;
+		cout << "        |                  ||" << endl;
+		cout << "        |     You lost!    ||" << endl;
+		cout << "        |                  ||" << endl;
+		cout << "*       | *   **    * **   |**      **" << endl;
+		cout << " \\)),.\\v)/.,(//,,..,,\\||(,,.,\\\\,.((//" << endl;
+		
+		std::cout << "You are out of money, sorry." << std::endl;
+	
+	}
+
 	/* main gameplay function*/
 	void startGame()
 	{
@@ -790,10 +851,11 @@ private:
 			/* checking for game over*/
 			if (players[player_index].playing == 0)
 			{
-				std::cout << "You are out of money, sorry." << std::endl;
-				std::cout << "Game over." << std::endl;
+				losingScreen();
 				break;
 			}
+
+			
 
 			bind = i % players_count;
 
@@ -818,6 +880,7 @@ private:
 			{
 				winner = getWinner();
 				std::cout << players[winner].name << " wins $" << pot << "\n\n";
+				players[winner].money += pot;
 				i++;
 				continue;
 			}
@@ -832,6 +895,7 @@ private:
 			{
 				winner = getWinner();
 				std::cout << players[winner].name << " wins $" << pot << "\n\n";
+				players[winner].money += pot;
 				i++;
 				continue;
 			}
@@ -846,6 +910,7 @@ private:
 			{
 				winner = getWinner();
 				std::cout << players[winner].name << " wins $" << pot << "\n\n";
+				players[winner].money += pot;
 				i++;
 				continue;
 			}
@@ -901,6 +966,12 @@ private:
 			
 
 			i++;
+		}
+
+		/* checking for winning */
+		if (playersLeft() == 1 & players[player_index].playing)
+		{
+			winnerScreen();
 		}
 
 	}
