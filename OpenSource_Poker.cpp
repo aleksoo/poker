@@ -247,7 +247,7 @@ private:
 	int pot, action, bet, rational, betOn, winner, maxPoints, roundWinner;
 	int handPoints[6];
 	int bestHand[6][3];
-    enum playerAction{FLOP = 1, CHECK, BETCALL};
+    enum playerAction{FLOP = 1, CHECK, BETCALL, RAISE};
 
 	int playersLeft()
 	{
@@ -313,9 +313,9 @@ private:
 				}
 				if (betOn)
 				{
-					cout << "\t\t\t\t\t1Your action: (1) FLOP (3) BET/CALL ";
+					cout << "\t\t\t\t\t1Your action: (1) FLOP (3) BET/CALL (4) RAISE";
 					cin >> action;
-					while (action != playerAction::FLOP && action != playerAction::BETCALL)
+					while (action != playerAction::FLOP && action != playerAction::BETCALL && action != playerAction::RAISE)
 					{
 						cout << "Invalid number pressed." << endl;
 						cout << "\t\t\t\t\tYour action: (1) FLOP (3) BET/CALL ";
@@ -345,6 +345,10 @@ private:
 				{
 					cout << "\t+ " << players[player_index].name << " checks.\n";
 					continue;
+				}
+				else if (action == playerAction::RAISE)
+				{
+					// raise
 				}
 				else
 				{										
@@ -470,20 +474,38 @@ private:
 						continue;
 					}
 					if (players[player_index].round && players[player_index].goodToGo == 0)
-					{
-						cout << "\t\t\t\t\t3Your action: (1) FLOP (3) BET/CALL ";
+					{ // tutaj ten raise dodac w opcjach i obsluzyc
+						cout << "\t\t\t\t\t3Your action: (1) FLOP (3) BET/CALL (4) RAISE ";
 						cin >> action;
 						while (action != playerAction::FLOP && action != playerAction::BETCALL)
 						{
 							cout << "Invalid number pressed." << endl;
-							cout << "\t\t\t\t\tYour action: (1) FLOP (3) BET/CALL ";
+							cout << "\t\t\t\t\tYour action: (1) FLOP (3) BET/CALL (4) RAISE ";
 							cin >> action;
 							cout << endl << endl;
 						}
 						if (action == playerAction::FLOP)
 						{
 							cout << "\t- " << players[player_index].name << " flops...\n";
-							players[player_index].round = 0;						}
+							players[player_index].round = 0;						
+						}
+						else if (action == playerAction::RAISE)
+						{ // RAISE
+							cout << "How much do you want to raise: ";
+							cin >> bet;						
+							while (bet > players[player_index].money || bet < 1)
+							{
+								cout << "Invalid number to raise." << endl;
+								cout << "How much do you want to raise: ";
+								cin >> bet;
+								cout << endl << endl;
+							}
+							pot += bet;
+							players[player_index].money -= bet;
+							betOn = bet;
+							players[player_index].goodToGo = 1;
+							cout << "\t+ " << players[player_index].name << " raises " << bet << "$\n";
+						}
 
 						else
 						{ 
@@ -517,20 +539,20 @@ private:
 					}
 					else
 					{
-							if (players[k % players_count].money - betOn > 0)
-							{
-								pot += betOn;
-								players[k % players_count].money -= betOn;
-								players[k % players_count].goodToGo = 1;
-								cout << "\t+ " << players[k % players_count].name << " bets " << betOn << "$\n";
-							}
-							else if (players[k % players_count].money - betOn <= 0)
-							{
-								cout << "\t+ " << players[k % players_count].name << " bets all-in (" << players[k % players_count].money << "$)\n";
-								pot += players[k % players_count].money;
-								players[k % players_count].money = 0;
-								players[k % players_count].goodToGo = 1;
-							}
+						if (players[k % players_count].money - betOn > 0)
+						{
+							pot += betOn;
+							players[k % players_count].money -= betOn;
+							players[k % players_count].goodToGo = 1;
+							cout << "\t+ " << players[k % players_count].name << " bets " << betOn << "$\n";
+						}
+						else if (players[k % players_count].money - betOn <= 0)
+						{
+							cout << "\t+ " << players[k % players_count].name << " bets all-in (" << players[k % players_count].money << "$)\n";
+							pot += players[k % players_count].money;
+							players[k % players_count].money = 0;
+							players[k % players_count].goodToGo = 1;
+						}
 					}
 				}
 			}
@@ -969,7 +991,7 @@ private:
 		}
 
 		/* checking for winning */
-		if (playersLeft() == 1 & players[player_index].playing)
+		if (playersLeft() == 1 & players[player_index].money)
 		{
 			winnerScreen();
 		}
