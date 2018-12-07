@@ -313,7 +313,7 @@ private:
 				}
 				if (betOn)
 				{
-					cout << "\t\t\t\t\tYour action: (1) FLOP (3) BET/CALL ";
+					cout << "\t\t\t\t\t1Your action: (1) FLOP (3) BET/CALL ";
 					cin >> action;
 					while (action != playerAction::FLOP && action != playerAction::BETCALL)
 					{
@@ -324,7 +324,7 @@ private:
 				}
 				else
 				{
-					cout << "\t\t\t\t\tYour action: (1) FLOP (2) CHECK (3) BET/CALL ";
+					cout << "\t\t\t\t\t2Your action: (1) FLOP (2) CHECK (3) BET/CALL ";
 					cin >> action;
 					while (action < playerAction::FLOP  || action > playerAction::BETCALL)
 					{
@@ -471,7 +471,7 @@ private:
 					}
 					if (players[player_index].round && players[player_index].goodToGo == 0)
 					{
-						cout << "\t\t\t\t\tYour action: (1) FLOP (3) BET/CALL ";
+						cout << "\t\t\t\t\t3Your action: (1) FLOP (3) BET/CALL ";
 						cin >> action;
 						while (action != playerAction::FLOP && action != playerAction::BETCALL)
 						{
@@ -480,11 +480,11 @@ private:
 							cin >> action;
 							cout << endl << endl;
 						}
-						if (action == playerAction::CHECK)
+						if (action == playerAction::FLOP)
 						{
 							cout << "\t- " << players[player_index].name << " flops...\n";
-							players[player_index].round = 0;
-						}
+							players[player_index].round = 0;						}
+
 						else
 						{ 
 							if (players[player_index].money - betOn > 0)
